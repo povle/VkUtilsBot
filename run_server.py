@@ -10,7 +10,7 @@ server = Flask(__name__)
 bot = Bot(token=TOKEN)
 
 @server.route('/'+SECRET, methods=['POST'])
-def bot():
+def handle():
     data = request.get_json(force=True, silent=True)
     if not data or 'type' not in data:
         return 'not ok'
