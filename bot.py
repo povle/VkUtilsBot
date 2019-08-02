@@ -32,9 +32,9 @@ class Bot:
         rd_id = vk_api.utils.get_random_id()
         self.vk.messages.send(user_id=to, random_id=rd_id, message=text[:4000],
                               attachment=attachments)
-        if len(text) > 4096:
+        if len(text) > 4000:
             time.sleep(0.4)
-            self.send(text[4096:], to)
+            self.send(text[4000:], to)
 
     def get_command(self, msg):
         text = msg.text
