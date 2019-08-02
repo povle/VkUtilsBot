@@ -50,7 +50,7 @@ class Bot:
     def ocr(self, msg):
         lang = self.get_args(msg)
         if not lang:
-            lang = 'rus'
+            lang = 'eng'
         for attachment in msg.attachments:
             if attachment['type'] == 'photo':
                 for size in reversed(attachment['photo']['sizes']):
@@ -61,8 +61,7 @@ class Bot:
                 try:
                     txt = pytesseract.image_to_string(Image.open(io.BytesIO(r.content)), lang=lang)
                 except pytesseract.pytesseract.TesseractError as e:
-                    return e
-                    #return 'Error: language not supported'
+                    return 'Error: language not supported'
                 else:
                     return txt
 
