@@ -1,0 +1,6 @@
+Flask
+vk_api
+requests
+gunicorn
+Pillow
+pytesseract
