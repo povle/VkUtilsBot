@@ -9,7 +9,8 @@ class Bot:
         self.vk = self.vk_session.get_api()
         self.text_commands = {'ocr': self.ocr, 'trans': self.trans,
                               'ping': self.ping, 'json': self.json}
-        self.commands = {}.update(self.text_commands)
+        self.commands = {}
+        self.commands.update(self.text_commands)
 
     def handle(self, data):
         event = VkBotMessageEvent(data)
