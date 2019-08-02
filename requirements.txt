@@ -2,5 +2,6 @@ Flask
 vk_api
 requests
 gunicorn
+gevent
 Pillow
 pytesseract
