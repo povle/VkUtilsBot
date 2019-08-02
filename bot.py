@@ -7,15 +7,15 @@ class Bot:
         self.token = token
         self.vk_session = vk_api.VkApi(token=self.token)
         self.vk = self.vk_session.get_api()
-        self.text_commands = {'ocr': self.ocr, 'trans': self.trans,
-                              'ping': self.ping, 'json': self.json}
+        self.text_commands = {'/ocr': self.ocr, '/trans': self.trans,
+                              '/ping': self.ping, '/json': self.json}
         self.commands = {}
         self.commands.update(self.text_commands)
 
     def handle(self, data):
         event = VkBotMessageEvent(data)
         msg = event.object
-        command = self.get_command(msg)
+        command = self.get_command(msg).lower()
         if command in self.text_commands:
             self.send(self.text_commands[command](msg), msg.from_id)
         elif command in self.commands:
