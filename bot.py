@@ -66,7 +66,7 @@ class Bot:
                     return txt
 
     def json(self, msg):
-        return json.dumps(dict(msg), indent=2)
+        return json.dumps(dict(msg), indent=2, ensure_ascii=False)
 
     def trans(self, msg):
         ru_layout = 'йцукенгшщзхъфывапролджэ\\ячсмитьбю.ЙЦУКЕНГШЩЗхъФЫВАПРОЛДжэ\\ЯЧСМИТЬбю.'
