@@ -28,7 +28,7 @@ class Bot:
         if not to:
             to = self.admin_id
         if attachments:
-            attachments = ','.join([f"{doc['type']}{doc['doc']['owner_id']}_{doc['doc']['id']}" for doc in attachments])
+            attachments = ','.join([f"{doc['type']}{doc[doc['type']]['owner_id']}_{doc[doc['type']]['id']}" for doc in attachments])
         rd_id = vk_api.utils.get_random_id()
         self.vk.messages.send(user_id=to, random_id=rd_id, message=text[:4000],
                               attachment=attachments)
