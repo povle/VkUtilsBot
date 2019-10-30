@@ -32,7 +32,7 @@ class Bot:
             for doc in attachments:
                 d = doc[doc['type']]
                 s = f"{doc['type']}{d['owner_id']}_{d['id']}"
-                if access_key in d:
+                if 'access_key' in d:
                     s += '_' + d['access_key']   
             attachments = ','.join(att)
         rd_id = vk_api.utils.get_random_id()
