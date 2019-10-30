@@ -33,7 +33,8 @@ class Bot:
                 d = doc[doc['type']]
                 s = f"{doc['type']}{d['owner_id']}_{d['id']}"
                 if 'access_key' in d:
-                    s += '_' + d['access_key']   
+                    s += '_' + d['access_key']
+                att.append(s)
             attachments = ','.join(att)
         rd_id = vk_api.utils.get_random_id()
         self.vk.messages.send(user_id=to, random_id=rd_id, message=text[:4000],
