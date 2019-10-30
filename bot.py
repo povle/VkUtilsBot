@@ -9,7 +9,7 @@ class Bot:
         self.vk = self.vk_session.get_api()
         self.text_commands = {'/ocr': self.ocr, '/trans': self.trans,
                               '/ping': self.ping, '/json': self.json}
-        self.commands = {}
+        self.commands = {'/echo': self.echo}
         self.commands.update(self.text_commands)
 
     def handle(self, data):
@@ -76,3 +76,6 @@ class Bot:
 
     def ping(self, msg):
         return 'pong'
+   
+    def echo(self, msg):
+        self.send(self.get_args(msg), msg.from_id, msg.attachments)
