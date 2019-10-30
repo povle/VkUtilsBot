@@ -45,7 +45,7 @@ class Bot:
 
     def get_args(self, msg):
         r = re.search('(?<= ).*$', msg.text)
-        return r.group() if r else None
+        return r.group() if r else ''
 
     def ocr(self, msg):
         lang = self.get_args(msg)
