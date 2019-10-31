@@ -107,5 +107,5 @@ class Bot:
         """список команд"""
         message = ''
         for command in self.commands:
-            message.append(f'{command} - {inspect.getdocs(self.commands[command])}\n')
+            message += f'{command} - {inspect.getdocs(self.commands[command])}\n'
         return message
