@@ -60,6 +60,7 @@ class Bot:
         return r.group() if r else ''
 
     def ocr(self, msg):
+        """распознает текст в полученных фото (по умолчанию английский, /ocr rus для русского)"""
         lang = self.get_args(msg)
         if not lang:
             lang = 'eng'
