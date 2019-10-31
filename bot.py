@@ -43,7 +43,7 @@ class Bot:
 
         rd_id = vk_api.utils.get_random_id()
         self.vk.messages.send(user_id=to, random_id=rd_id, message=text[:4000],
-                              attachment=_attachments.join(','))
+                              attachment=','.join(_attachments))
         if len(text) > 4000:
             time.sleep(0.4)
             self.send(text[4000:], to)
