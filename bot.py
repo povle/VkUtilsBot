@@ -23,9 +23,6 @@ class Bot:
             self.commands[command](msg)
 
     def send(self, text, to=None, attachments=[], photos=[]):
-        if not text and not attachments:
-            text = 'empty'
-        text = str(text)
         if not to:
             to = self.admin_id
 
@@ -40,6 +37,10 @@ class Bot:
             upload = vk_api.VkUpload(self.vk_session)
             for photo in upload.photo_messages(photos=photos):
                 _attachments.append(f"photo{photo['owner_id']}_{photo['id']}")
+
+        if not text and not _attachments:
+            text = 'empty'
+        text = str(text)
 
         rd_id = vk_api.utils.get_random_id()
         self.vk.messages.send(user_id=to, random_id=rd_id, message=text[:4000],
