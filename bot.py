@@ -1,4 +1,4 @@
-import vk_api, pytesseract, requests, io, re, time, json
+import vk_api, pytesseract, requests, io, re, time, json, inspect
 from PIL import Image
 from vk_api.bot_longpoll import VkBotMessageEvent
 
@@ -8,7 +8,8 @@ class Bot:
         self.vk_session = vk_api.VkApi(token=self.token)
         self.vk = self.vk_session.get_api()
         self.text_commands = {'/ocr': self.ocr, '/trans': self.trans,
-                              '/ping': self.ping, '/json': self.json}
+                              '/ping': self.ping, '/json': self.json,
+                              '/help': self.help}
         self.commands = {'/echo': self.echo}
         self.commands.update(self.text_commands)
 
@@ -77,18 +78,22 @@ class Bot:
                     return txt
 
     def json(self, msg):
+        """присылает json полученного сообщения"""
         return json.dumps(dict(msg), indent=2, ensure_ascii=False)
 
     def trans(self, msg):
+        """перевод раскладки, например: /trans ghbdtn"""
         ru_layout = 'йцукенгшщзхъфывапролджэ\\ячсмитьбю.ЙЦУКЕНГШЩЗхъФЫВАПРОЛДжэ\\ЯЧСМИТЬбю.'
         en_layout = 'qwertyuiop[]asdfghjkl;\'\\zxcvbnm,./QWERTYUIOP[]ASDFGHJKL;\'\\ZXCVBNM,./'
         trtab = str.maketrans(ru_layout + en_layout, en_layout + ru_layout)
         return self.get_args(msg).translate(trtab)
 
     def ping(self, msg):
+        """пинг"""
         return 'pong'
 
     def echo(self, msg):
+        """присылает полученное фото ответным сообщением"""
         photos = []
         for att in msg.attachments:
             if att['type'] == 'photo':
@@ -96,3 +101,10 @@ class Bot:
                 url = max(photo['sizes'], key=lambda x: x['width']*x['height'])['url']
                 photos.append(io.BytesIO(requests.get(url).content))
         self.send(self.get_args(msg), msg.from_id, photos=photos)
+
+    def help(self, msg):
+        """список команд"""
+        message = ''
+        for command in self.commands:
+            message.append(f'{command} - {inspect.getdocs(self.commands[command])}\n')
+        return message
