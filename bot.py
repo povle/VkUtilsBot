@@ -89,4 +89,10 @@ class Bot:
         return 'pong'
 
     def echo(self, msg):
-        self.send(self.get_args(msg), msg.from_id, msg.attachments)
+        photos = []
+        for att in msg.attachments:
+            if att['type'] == 'photo':
+                photo = att['photo']
+                url = max(photo['sizes'], key=lambda x: x['width']*x['height'])['url']
+                photos.append(io.BytesIO(requests.get(url).content))
+        self.send(self.get_args(msg), msg.from_id, photos=photos)
