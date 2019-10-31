@@ -21,24 +21,28 @@ class Bot:
         elif command in self.commands:
             self.commands[command](msg)
 
-    def send(self, text, to=None, attachments=None):
+    def send(self, text, to=None, attachments=[], photos=[]):
         if not text and not attachments:
             text = 'empty'
         text = str(text)
         if not to:
             to = self.admin_id
-        if attachments:
-            att = []
-            for doc in attachments:
-                d = doc[doc['type']]
-                s = f"{doc['type']}{d['owner_id']}_{d['id']}"
-                if 'access_key' in d:
-                    s += '_' + d['access_key']
-                att.append(s)
-            attachments = ','.join(att)
+
+        _attachments = []
+        for doc in attachments:
+            d = doc[doc['type']]
+            s = f"{doc['type']}{d['owner_id']}_{d['id']}"
+            if 'access_key' in d:
+                s += '_' + d['access_key']
+            _attachments.append(s)
+        if photos:
+            upload = vk_api.VkUpload(self.vk_session)
+            for photo in upload.photo_messages(photos=photos):
+                _attachments.append(f"photo{photo['owner_id']}_{photo['id']}")
+
         rd_id = vk_api.utils.get_random_id()
         self.vk.messages.send(user_id=to, random_id=rd_id, message=text[:4000],
-                              attachment=attachments)
+                              attachment=_attachments.join(','))
         if len(text) > 4000:
             time.sleep(0.4)
             self.send(text[4000:], to)
