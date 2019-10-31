@@ -67,7 +67,7 @@ class Bot:
                 r = requests.get(url)
                 try:
                     txt = pytesseract.image_to_string(Image.open(io.BytesIO(r.content)), lang=lang)
-                except pytesseract.pytesseract.TesseractError as e:
+                except pytesseract.pytesseract.TesseractError:
                     return 'Error: language not supported'
                 else:
                     return txt
@@ -83,6 +83,6 @@ class Bot:
 
     def ping(self, msg):
         return 'pong'
-   
+
     def echo(self, msg):
         self.send(self.get_args(msg), msg.from_id, msg.attachments)
