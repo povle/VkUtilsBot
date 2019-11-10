@@ -56,9 +56,16 @@ class Bot:
         else:
             return text.split()[0]
 
-    def get_args(self, msg):
+    def get_args(self, msg, recursive=False):
+        args = []
         r = re.search('(?<= ).*$', msg.text)
-        return r.group() if r else ''
+        if r:
+            args.append(r.group())
+        if recursive:
+            for m in msg.fwd_messages:
+                if m['text']:
+                    args.append(m['text'])
+        return '\n'.join(args)
 
     def ocr(self, msg):
         """распознает текст в полученных фото (по умолчанию английский, /ocr rus для русского)"""
@@ -88,7 +95,7 @@ class Bot:
         ru_layout = 'йцукенгшщзхъфывапролджэ\\ячсмитьбю.ЙЦУКЕНГШЩЗхъФЫВАПРОЛДжэ\\ЯЧСМИТЬбю.'
         en_layout = 'qwertyuiop[]asdfghjkl;\'\\zxcvbnm,./QWERTYUIOP[]ASDFGHJKL;\'\\ZXCVBNM,./'
         trtab = str.maketrans(ru_layout + en_layout, en_layout + ru_layout)
-        return self.get_args(msg).translate(trtab)
+        return self.get_args(msg, recursive=True).translate(trtab)
 
     def ping(self, msg):
         """пинг"""
