@@ -22,7 +22,7 @@ class Bot:
         elif command in self.commands:
             self.commands[command](msg)
 
-    def send(self, text, to=None, attachments=[], photos=[]):
+    def send(self, text, to=None, attachments=[], photos=[], dont_parse_links=1, **kwargs):
         if not to:
             to = self.admin_id
 
@@ -44,7 +44,8 @@ class Bot:
 
         rd_id = vk_api.utils.get_random_id()
         self.vk.messages.send(user_id=to, random_id=rd_id, message=text[:4000],
-                              attachment=','.join(_attachments))
+                              attachment=','.join(_attachments), dont_parse_links=dont_parse_links,
+                              **kwargs)
         if len(text) > 4000:
             time.sleep(0.4)
             self.send(text[4000:], to)
